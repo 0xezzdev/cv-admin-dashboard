@@ -1,25 +1,17 @@
-// Messages JavaScript for admin dashboard
 document.addEventListener('DOMContentLoaded', function() {
-  fetch('/api/messages')
-    .then(response => response.json())
-    .then(data => {
-      const messagesList = document.getElementById('messages-list');
-      if (data.messages.length > 0) {
-        data.messages.forEach(message => {
-          const messageItem = document.createElement('div');
-          messageItem.classList.add('message-item');
-          messageItem.innerHTML = `
-            <h4>${message.sender_name}</h4>
-            <p>${message.subject}</p>
-            <p>${message.content}</p>
-          `;
-          messagesList.appendChild(messageItem);
-        });
-      } else {
-        messagesList.innerHTML = 'No messages found.';
-      }
-    })
-    .catch(error => console.error('Error fetching messages:', error));
+  // Check if we're on the messages list page
+  if (window.location.pathname === '/messages') {
+    loadAllMessages();
+    setupMessageFilters();
+  }
+  
+  // Check if we're on the message detail page
+  if (window.location.pathname.startsWith('/message/')) {
+    const messageId = window.location.pathname.split('/').pop();
+    loadMessageDetails(messageId);
+    setupReplyForm(messageId);
+    setupDeleteButton(messageId);
+  }
 });
 // Load all messages for the messages page
 function loadAllMessages(filter = 'all') {
