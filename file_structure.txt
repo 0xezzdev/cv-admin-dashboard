@@ -1,0 +1,38 @@
+// File structure for the admin dashboard implementation
+
+/cv_website_admin/
+  /public/             // Static assets
+    /css/
+      styles.css       // Main stylesheet
+      admin.css        // Admin-specific styles
+    /js/
+      auth.js          // Authentication logic
+      dashboard.js     // Dashboard functionality
+      messages.js      // Message handling
+  /server/
+    /config/           // Configuration files
+      db.js            // Database configuration
+      auth.js          // Authentication configuration
+    /controllers/      // Route controllers
+      authController.js
+      messageController.js
+    /models/           // Data models
+      User.js          // Admin user model
+      Message.js       // Message model
+      Reply.js         // Reply model
+    /routes/           // API routes
+      authRoutes.js
+      messageRoutes.js
+    /utils/            // Utility functions
+      email.js         // Email functionality
+      security.js      // Security helpers
+    app.js             // Main application file
+    server.js          // Server entry point
+  /views/              // Frontend templates
+    login.html         // Login page
+    dashboard.html     // Main dashboard
+    messages.html      // Message list view
+    message-detail.html // Single message view
+    settings.html      // Admin settings
+  package.json         // Dependencies
+  README.md            // Documentation

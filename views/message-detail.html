@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Details - Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
+                <li class="active"><a href="/messages"><i class="icon-messages"></i> Messages</a></li>
+                <li><a href="/settings"><i class="icon-settings"></i> Settings</a></li>
+                <li><a href="#" id="logout-button"><i class="icon-logout"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Message Details</h1>
+                <div class="user-info">
+                    <span id="username-display">Admin</span>
+                </div>
+            </header>
+            
+            <div class="message-details-container">
+                <div class="message-header">
+                    <a href="/messages" class="back-button">&larr; Back to Messages</a>
+                    <div class="message-actions">
+                        <button id="delete-message-btn" class="btn-danger">Delete</button>
+                    </div>
+                </div>
+                
+                <div class="message-content" id="message-content">
+                    <div class="loading">Loading message...</div>
+                </div>
+                
+                <div class="message-replies" id="message-replies">
+                    <h3>Replies</h3>
+                    <div class="replies-list" id="replies-list">
+                        <!-- Replies will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="reply-form">
+                    <h3>Send Reply</h3>
+                    <div class="form-group">
+                        <textarea id="reply-content" rows="5" placeholder="Type your reply here..."></textarea>
+                    </div>
+                    <button id="send-reply-btn" class="btn-primary">Send Reply</button>
+                    <div id="reply-status" class="status-message"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/messages.js"></script>
+</body>
+</html>

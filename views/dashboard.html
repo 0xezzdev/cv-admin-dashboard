@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active"><a href="/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
+                <li><a href="/messages"><i class="icon-messages"></i> Messages</a></li>
+                <li><a href="/settings"><i class="icon-settings"></i> Settings</a></li>
+                <li><a href="#" id="logout-button"><i class="icon-logout"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <span id="username-display">Admin</span>
+                </div>
+            </header>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total Messages</h3>
+                    <div class="stat-value" id="total-messages">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unread Messages</h3>
+                    <div class="stat-value" id="unread-messages">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Replied Messages</h3>
+                    <div class="stat-value" id="replied-messages">0</div>
+                </div>
+            </div>
+            
+            <div class="recent-messages">
+                <h2>Recent Messages</h2>
+                <div class="message-list" id="recent-messages-list">
+                    <!-- Messages will be loaded here -->
+                    <div class="loading">Loading messages...</div>
+                </div>
+                <div class="view-all">
+                    <a href="/messages">View All Messages</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

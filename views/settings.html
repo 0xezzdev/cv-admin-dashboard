@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
+                <li><a href="/messages"><i class="icon-messages"></i> Messages</a></li>
+                <li class="active"><a href="/settings"><i class="icon-settings"></i> Settings</a></li>
+                <li><a href="#" id="logout-button"><i class="icon-logout"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Settings</h1>
+                <div class="user-info">
+                    <span id="username-display">Admin</span>
+                </div>
+            </header>
+            
+            <div class="settings-container">
+                <div class="settings-card">
+                    <h2>Change Password</h2>
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password" name="current-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" name="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    <div id="password-status" class="status-message"></div>
+                    <button id="change-password-btn" class="btn-primary">Change Password</button>
+                </div>
+                
+                <div class="settings-card">
+                    <h2>Email Notifications</h2>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notify-new-messages" checked>
+                            Receive email notifications for new messages
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="email-address">Email Address</label>
+                        <input type="email" id="email-address" name="email-address" value="ezzeldeen20052018@gmail.com" readonly>
+                    </div>
+                    <div id="notification-status" class="status-message"></div>
+                    <button id="save-notification-settings-btn" class="btn-primary">Save Settings</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/settings.js"></script>
+</body>
+</html>

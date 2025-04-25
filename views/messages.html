@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/dashboard"><i class="icon-dashboard"></i> Dashboard</a></li>
+                <li class="active"><a href="/messages"><i class="icon-messages"></i> Messages</a></li>
+                <li><a href="/settings"><i class="icon-settings"></i> Settings</a></li>
+                <li><a href="#" id="logout-button"><i class="icon-logout"></i> Logout</a></li>
+            </ul>
+        </nav>
+        
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Messages</h1>
+                <div class="user-info">
+                    <span id="username-display">Admin</span>
+                </div>
+            </header>
+            
+            <div class="message-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="unread">Unread</button>
+                <button class="filter-btn" data-filter="read">Read</button>
+                <button class="filter-btn" data-filter="replied">Replied</button>
+            </div>
+            
+            <div class="messages-container">
+                <div class="message-list" id="messages-list">
+                    <!-- Messages will be loaded here -->
+                    <div class="loading">Loading messages...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/messages.js"></script>
+</body>
+</html>
