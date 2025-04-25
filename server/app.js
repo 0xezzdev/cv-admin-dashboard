@@ -1,4 +1,4 @@
-// Update app.js to include reply routes
+// Updated app.js with proper CORS configuration
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -11,8 +11,19 @@ const { initializeDatabase } = require('./config/db');
 // Initialize express app
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS configuration - updated to allow requests from Netlify
+const corsOptions = {
+  origin: ['https://ezzeldeenmohamed-cv.netlify.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+// Apply CORS middleware with options
+app.use(cors(corsOptions));
+
+// Other middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -26,7 +37,7 @@ initializeDatabase();
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
-app.use('/api', replyRoutes); // Added reply routes
+app.use('/api', replyRoutes);
 
 // Serve HTML files
 app.get('/', (req, res) => {
