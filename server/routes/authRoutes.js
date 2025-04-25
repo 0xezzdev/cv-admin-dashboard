@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const { db } = require('../config/db');
 const router = express.Router();
+const user = 'admin';
 
 // تسجيل الدخول
 router.post('/login', (req, res) => {
@@ -11,7 +12,7 @@ router.post('/login', (req, res) => {
     return res.status(400).send({ message: 'Please provide both username and password.' });
   }
 
-  db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, 'admin') => {
+  db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, user) => {
     if (err) {
       return res.status(500).send({ message: 'Error while checking username.' });
     }
