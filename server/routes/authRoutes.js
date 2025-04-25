@@ -11,7 +11,7 @@ router.post('/login', (req, res) => {
     return res.status(400).send({ message: 'Please provide both username and password.' });
   }
 
-  db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, user) => {
+  db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, 'admin') => {
     if (err) {
       return res.status(500).send({ message: 'Error while checking username.' });
     }
