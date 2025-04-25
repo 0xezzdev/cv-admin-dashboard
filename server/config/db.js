@@ -1,86 +1,97 @@
-const express = require('express');
+// Database configuration
+const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const bcrypt = require('bcryptjs');  // إضافة مكتبة bcryptjs للتحقق من كلمة السر المشفرة
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const authRoutes = require('./routes/authRoutes');
-const messageRoutes = require('./routes/messageRoutes');
-const replyRoutes = require('./routes/replyRoutes');
-const { initializeDatabase } = require('./config/db');
+const fs = require('fs');
 
-// Initialize express app
-const app = express();
+// Ensure data directory exists
+const dataDir = path.join(__dirname, 'data'); // استخدم مسار نسبي هنا
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+// Database file path
+const dbPath = path.join(dataDir, 'admin.db'); // استخدم المسار الصحيح للـ database
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '../public')));
-
-// Initialize database
-initializeDatabase();
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/messages', messageRoutes);
-app.use('/api', replyRoutes); // Added reply routes
-
-// Serve HTML files
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/login.html'));
+// Initialize database connection
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error connecting to database:', err.message);
+    return;
+  }
+  console.log('Connected to the SQLite database.');
 });
 
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/dashboard.html'));
-});
-
-app.get('/messages', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/messages.html'));
-});
-
-app.get('/message/:id', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/message-detail.html'));
-});
-
-app.get('/settings', (req, res) => {
-  res.sendFile(path.join(__dirname, '../views/settings.html'));
-});
-
-// Login route (modified)
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // البحث عن المستخدم في قاعدة البيانات
-  db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
+// Initialize database tables
+const initializeDatabase = () => {
+  // Create admin user table
+  db.run(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    email TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
     if (err) {
-      console.error('Error checking user:', err.message);
-      return res.status(500).send('Server Error');
+      console.error('Error creating users table:', err.message);
+    }
+  });
+
+  // Create messages table
+  db.run(`CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_name TEXT NOT NULL,
+    sender_email TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    content TEXT NOT NULL,
+    read INTEGER DEFAULT 0,
+    replied INTEGER DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating messages table:', err.message);
+    }
+  });
+
+  // Create replies table
+  db.run(`CREATE TABLE IF NOT EXISTS replies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    message_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (message_id) REFERENCES messages (id)
+  )`, (err) => {
+    if (err) {
+      console.error('Error creating replies table:', err.message);
+    }
+  });
+
+  // Check if admin user exists, if not create default admin
+  db.get(`SELECT * FROM users WHERE username = 'admin'`, [], (err, row) => {
+    if (err) {
+      console.error('Error checking admin user:', err.message);
+      return;
     }
 
     if (!row) {
-      return res.status(401).send('Invalid credentials');  // لو المستخدم مش موجود
-    }
+      const bcrypt = require('bcryptjs');
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync('admin123', salt);
 
-    // مقارنة كلمة السر المدخلة بالكلمة المخزنة في قاعدة البيانات
-    const isMatch = bcrypt.compareSync(password, row.password);
-    
-    if (isMatch) {
-      // كلمة السر صحيحة، قم بتسجيل الدخول
-      res.send('Login successful');
-    } else {
-      // كلمة السر خاطئة
-      res.status(401).send('Invalid credentials');
+      db.run(`INSERT INTO users (username, password, email) VALUES (?, ?, ?)`, 
+        ['admin', hashedPassword, 'ezzeldeen20052018@gmail.com'], 
+        function (err) {
+          if (err) {
+            console.error('Error creating admin user:', err.message);
+          } else {
+            console.log('Default admin user created successfully.');
+          }
+        }
+      );
     }
   });
-});
+};
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
-module.exports = app;
+module.exports = {
+  db,
+  initializeDatabase
+};
